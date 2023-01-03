@@ -187,16 +187,17 @@ Finally, below where you declare the variable `currentTime`, log `currentTime` t
 ### Step 5: Finishing touches
 
 To complete your map, please do the following:
-1. Create an alert window that displays on load or add explanatory text at the top of your webpage to explain that your page will ask the user for their location information. Tell them why it will do this and that you will not store or share their location information.
-2. Add a layer control that allows the user to manually switch between light and dark basemaps, in case the automatically selected basemap isn't to their liking. You can do this without any additional Leaflet plugins. See [this tutorial](https://leafletjs.com/examples/layers-control/) for further help.
-3. Set up the map.locate method to run at the click of a button rather than on page load. Because the user must give the browser permission to use their current location, it is a good idea to link the geolocation request to an action that the user must take (such as clicking a button), rather than having it run on page load, when the user is less likely to understand the purpose of the geolocation request and therefore more likely to deny permission. You can use an ordinary HTML button for this with a click event listener, or the [L.EasyButton plugin](https://github.com/CliffCloud/Leaflet.EasyButton) is another way to do this.
-4. OPTIONAL, for bonus points: set your map to change basemap tiles more precisely, using both hours and minutes of the current time and of the sunrise/sunset (explore documentation for the Date object to figure out how to do this). And/or, set it to change on dawn and dusk rather than sunrise and sunset. 
+1. Delete the `console.log` statements you created in the step above if you haven't already. 
+2. Create an alert window that displays on load or add explanatory text at the top of your webpage to explain that your page will ask the user for their location information. Tell them why it will do this and that you will not store or share their location information. Adjust the size of your map canvas to accommodate explanatory text if needed. 
+3. Add a layer control that allows the user to manually switch between light and dark basemaps, in case the automatically selected basemap isn't to their liking. You can do this without any additional Leaflet plugins. See [this tutorial](https://leafletjs.com/examples/layers-control/) for further help.
+4. Set up the map.locate method to run at the click of a button rather than on page load. Because the user must give the browser permission to use their current location, it is a good idea to link the geolocation request to an action that the user must take (such as clicking a button), rather than having it run on page load, when the user is less likely to understand the purpose of the geolocation request and therefore more likely to deny permission. You can use an ordinary HTML button for this with a click event listener, or the [L.EasyButton plugin](https://github.com/CliffCloud/Leaflet.EasyButton) is another way to do this.
+5. OPTIONAL, for bonus points: set your map to change basemap tiles more precisely, using both hours and minutes of the current time and of the sunrise/sunset (explore documentation for the Date object to figure out how to do this). And/or, set it to change on dawn and dusk rather than sunrise and sunset (explore the documentation for SunCalc to figure out how to do this). 
 
 As always, reach out to me and one another for assistance as needed.
 
 ### Submission
 Submit a link to your final work on Canvas along with brief answers to the following questions:
-1. Regarding Leaflet's map.locate method (documentation [here](https://leafletjs.com/reference-1.7.1.html#locate-options)), if we don't specify any options when we call the method, will the map recenter if geolocation is found? (Hint: what is the default parameter for the setView option?)
+1. Regarding Leaflet's map.locate method (documentation [here](https://leafletjs.com/reference.html#locate-options)), if we don't specify any options when we call the method, will the map recenter if geolocation is found? (Hint: what is the default parameter for the setView option?)
 2. Answers to the following questions about the Geolocation API documentation (https://www.w3.org/TR/geolocation-API/):
 
    a.	What is the confidence level on the accuracy value returned by the API?
