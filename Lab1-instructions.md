@@ -90,7 +90,7 @@ The message that displays will depend on the error; you can also find these erro
 At this point, you've basically completed the Leaflet on Mobile tutorial and your map should look something like their [complete example](https://leafletjs.com/examples/mobile/example.html) but with some custom improvements.
 
 ### Step 3: Giving the user feedback about the geolocation accuracy of their device
-You've made some good progress on the lab. Well done. You've been doing your development and testing on a laptop or desktop computer; now, take a moment to test out your work on your mobile device. Upload your HTML, JS, and CSS files as a repository to GitHub and enable Pages for the repository. After your files have uploaded, visit the URL where they are hosted test things out, comparing what displays to what you see on your computer. In all likelihood, the radius of the circle you get with your mobile device is much smaller than the radius of the circle you get with your computer. This is because your mobile device has GPS, which provides much greater locational accuracy than the IP address the webpage accesses to geolocate your computer. The size of the circle is one form of **feedback** that our web map gives the user to understand the accuracy of their geolocation. But let's add a second form of feedback to make this even more clear to the user. We'll use conditional styling to change the color of the circle if the accuracy is above a certain level of accuracy--green if it's accurate within 100 meters and red if it's less accurate than that.
+So far, you've been doing your development and testing on a laptop or desktop computer; now, take a moment to test out your work on your mobile device. Upload your HTML, JS, and CSS files as a repository to GitHub and enable Pages for the repository. After your files have uploaded, visit the URL where they are hosted test things out, comparing what displays to what you see on your computer. In all likelihood, the radius of the circle you get with your mobile device is much smaller than the radius of the circle you get with your computer. This is because your mobile device has GPS, which provides much greater locational accuracy than the IP address the webpage accesses to geolocate your computer. The size of the circle is one form of **feedback** that our web map gives the user to understand the accuracy of their geolocation. But let's add a second form of feedback to make this even more clear to the user. We'll use conditional styling to change the color of the circle if the accuracy is above a certain level of accuracy--green if it's accurate within 100 meters and red if it's less accurate than that.
 
 In the function `onLocationFound` replace the line of code that reads `L.circle(e.latlng, radius).addTo(map);` with the following:
 ```javascript
@@ -134,7 +134,7 @@ Next, we need to initialize the map with one of the two tile layers. Let's choos
 ```javascript
 var map = L.map('map', {layers:[light]}).fitWorld();
 ```
-Then, move that line **below** the sections of code that add the two tile layers. Your map should load with the Mapbox Light style instead of the Streets style now.
+Then, move that line **below** the sections of code that add the two tile layers. Your map should load with the Mapbox Light style instead of the Streets style now. Self-check question: why do we move that line of code below the code that adds the two tile layers? See the bottom of the page for the answer. 
 
 But how do we get the basemap to change based on today's sunset and sunrise times in the user's location? Let's break this task down into component steps:
 1. figure out what the user's current location is and what the current date is
@@ -170,11 +170,19 @@ Since `getTimes` returns a lot more information than we need, we pull out just t
 
 Next, we get the current time by again using the `new Date` constructor and specifying that we want just the current hour of the current date and time with `getHours()`. Finally, using an if/else conditional statement, we remove and add baselayers based on whether the current hour falls between sunrise and sunset.
 
-Easy right? :)
+Easy right? :) (Don't worry, we'll examine this more closely in the steps below.)
 
 But none of this will actually work if we don't also include a link to the SunCalc library in our index. If you've made the changes specified above and test your map, you won't see any changes, even if it's after sunset. If you open Developer Tools and view the JavaScript console, you'll see the following error: `Uncaught ReferenceError: SunCalc is not defined`. Search the web to find a SunCalc on a CDN, or follow these instructions to download the library from GitHub and host it locally:
 
-From the [SunCalc Github page](https://github.com/mourner/suncalc), click the green 'Clone or download' button and download the ZIP. Extract just the `suncalc.js` file and save it in the same folder where the rest of your lab files are stored. Link to this file using a `<script>` tag in the `head` of your index.html file and test it again. Et voila!
+From the [SunCalc Github page](https://github.com/mourner/suncalc), click the green 'Clone or download' button and download the ZIP. Extract just the `suncalc.js` file and save it in the same folder where the rest of your lab files are stored. Link to this file using a `<script>` tag in the `head` of your index.html file and test it again. This time it should work. 
+
+But let's slow down and make sure you understand that chunk of code above. We'll log some data to the console to figure out what is going on piece by piece. 
+
+After the lines of code where you declare the `times`, `sunrise` and `sunset` variables, use `console.log()` to log the `times` variable to the console. The exact data that you get will depend on the location and time of day you are working on this, but you should get a result that resembles the JavaScript object described in the SunCalc documentation. 
+
+Next, log the variables `sunrise` and `sunset` to the console. You should see just two numbers, likely (again, depending on when and where you are working) 7 and 16. This is the code pulling out just the hours of sunrise (7, or 7 am) and sunset (16, or 4pm) where you are working. 
+
+Finally, below where you declare the variable `currentTime`, log `currentTime` to the console. You should get another number, representing the hour of the current time in your location. Now the if/else conditional statement should make clear sense: is the current hour (`currentTime`) greater than the time of sunrise and less than the time of sunset? If so, it's daylight hours and your map will display with the light theme basemap tiles. If not, the sun is not up and your map will display with the dark theme basemap tiles. 
 
 ### Step 5: Finishing touches
 
@@ -182,6 +190,7 @@ To complete your map, please do the following:
 1. Create an alert window that displays on load or add explanatory text at the top of your webpage to explain that your page will ask the user for their location information. Tell them why it will do this and that you will not store or share their location information.
 2. Add a layer control that allows the user to manually switch between light and dark basemaps, in case the automatically selected basemap isn't to their liking. You can do this without any additional Leaflet plugins. See [this tutorial](https://leafletjs.com/examples/layers-control/) for further help.
 3. Set up the map.locate method to run at the click of a button rather than on page load. Because the user must give the browser permission to use their current location, it is a good idea to link the geolocation request to an action that the user must take (such as clicking a button), rather than having it run on page load, when the user is less likely to understand the purpose of the geolocation request and therefore more likely to deny permission. You can use an ordinary HTML button for this with a click event listener, or the [L.EasyButton plugin](https://github.com/CliffCloud/Leaflet.EasyButton) is another way to do this.
+4. OPTIONAL, for bonus points: set your map to change basemap tiles more precisely, using both hours and minutes of the current time and of the sunrise/sunset (explore documentation for the Date object to figure out how to do this). And/or, set it to change on dawn and dusk rather than sunrise and sunset. 
 
 As always, reach out to me and one another for assistance as needed.
 
@@ -194,3 +203,6 @@ Submit a link to your final work on Canvas along with brief answers to the follo
 
    b.	In this lab, we haven't access data on the heading (or direction of travel) of the device, but using the Geolocation API, we could. If the Geolocation API returned a heading reading of 135, what direction would the device be facing?
 3. Once you've uploaded your final map to GitHub Pages or your UW server space, test the map on at least one browser on your computer and at least one browser on your mobile device. List the browsers you ran your test with and briefly describe the differences in user experience between the devices/browsers. Did you run into any bugs while testing? If so, explain.
+
+### Answer to the self-check question: 
+We move it below because the change we made to the line of code now references the layer named 'light'. We must move the code below the section of code where the layer light is initiated and where the variable named 'light' is declared, otherwise we get a console error that reads "Cannot read properties of undefined ... at scripts.js: 1"
