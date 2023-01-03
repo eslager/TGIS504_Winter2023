@@ -1,4 +1,4 @@
-# Lab 1: Geolocation and mobile optimization with Leaflet
+# Lab 1: Geolocation and working with the Date object
 ## TGIS 504, Winter 2023, Dr. Emma Slager
 ### Introduction
 In this lab, you will implement two aspects of JavaScript that can be hugely significant to mobile and web mapping: the [JavaScript Date object](https://www.w3schools.com/js/js_dates.asp) to work with time data, and and [the geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API). You will create a map that places a marker on the map based on the locational information provided by the user's device, include signifiers that indicate to the user the accuracy of their device's locational information, add functionality that switches the base map between light and dark based on whether the sun is up at the user's location, and utilize various other design conventions. This lab also asks you to read relevant documentation on the technologies used and to answer a few questions about that documentation in order to assess your understanding of its contents.
