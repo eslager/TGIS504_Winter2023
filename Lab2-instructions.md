@@ -30,7 +30,7 @@ const map = new mapboxgl.Map({
 });
 ```
 
-Now you should have a map centered on Tacoma, WA. Open your index in the Google Chrome browser and open Google Developer Tools. (Note: the following instructions are specific to Google Chrome, but if you prefer to test with Mozilla Firefox or another browser, you can search the Internet for how to achieve the same thing with your browser of choice. [Here](https://developer.mozilla.org/en-US/docs/Tools/Responsive_Design_Mode), for instance, are the Firefox instructions.) In the Developer Tools window, to the left of the toggle that let's you switch between 'Elements' and 'Console,' click the button that looks like an icon of a mobile phone and a tablet: 
+Now you should have a map centered on Tacoma, WA. Open your index in the Google Chrome browser and open Google Developer Tools. (Note: the following instructions are specific to Google Chrome, but if you prefer to test with Mozilla Firefox or another browser, you can search the Internet for how to achieve the same thing with your browser of choice. [Here](https://developer.mozilla.org/en-US/docs/Tools/Responsive_Design_Mode), for instance, are the Firefox instructions.) In the Developer Tools window, to the left of the toggle that lets you switch between 'Elements' and 'Console,' click the button that looks like an icon of a mobile phone and a tablet: 
 
 ![Button screenshot](images/mobile-button.PNG)
 
@@ -42,11 +42,11 @@ Next, let's add data for the libraries and hospitals.
 
 #### 1.2 Add your data
 
-In the past, I have had you add geojson data to your maps using external geojson files. This method keeps our code tidy and makes it easy to read our data. Here, however, our data is stored as an external *JavaScript* file, where each JS file contains a geojson FeatureCollection stored as a named variable. This is because we'll have to access these variables by name later in order to use Turf.js. It *is* possible to store a FeatureCollection in an external geojson file and to use Turf.js to analyze that data, but doing so requires JQuery, so to keep things simple, and to learn a new way of storing and using data with JavaScript, we'll store our geojson data in standalone JS files. 
+Included in the starter files are two data files, hospitals.js and libraries.js. Each file contains a geojson object that is defined as a variable. We'll access the variables (and thus the geojson objects) by variable name later in the code in order to use Turf.js. Note that it is possible to use Turf with a geojson stored as an external file (i.e. saved as a geojson file rather than as a js file), but doing so requires JQuery, so to keep things simple, we store the geojson data for this lab in standalone js files. 
 
 Examine hospitals.js file and you will see the following:
 
-```java
+```javascript
 var hospitalPoints = {
   "type":"FeatureCollection",
   "features":[
@@ -110,8 +110,8 @@ Refresh your page to test your code. You should see a medical cross icon for the
 * When do the layers get added to the map? Asked another way, what JavaScript *event* needs to take place before the layers get added? 
 * What *method* do we use to create the layer? 
 * If we wanted to do something with the libraries layer later, such as add clickable pop-ups to the features, what id would we use to reference the layer? 
-* Both of these layers are of the type `symbol`, which essentially means the layer is composed of point features represented by icons. By recalling from Lab 1, and/or by consulting the [Mapbox layer documentation](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/), what is the Mapbox layer type keyword for a polygon layer? 
-* You've seen the `paint` option before in Lab 1, but `layout` is new. According to [the Mapbox documentation](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layer-sub-properties) what is the difference between layout properties and paint properties? 
+* Both of these layers are of the type `symbol`, which essentially means the layer is composed of point features represented by icons. By recalling from fall quarter's Intro to Mapbox lab and/or by consulting the [Mapbox layer documentation](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/), what is the Mapbox layer type keyword for a polygon layer? 
+* You've seen the `paint` option before in last quarter's Intro to Mapbox lab, but `layout` is new. According to [the Mapbox documentation](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layer-sub-properties) what is the difference between layout properties and paint properties? 
 
 In this code, we use the `layout` option to define the icon that will display for the features in each layer. Both of these icons are conveniently built into the default Mapbox styles, so we can reference them by their names, `hospital-15` and `library-15`. If we wanted to use a custom icon instead of one that is built in to Mapbox, we would have to add the icon image with an additional method --`map.addImage('url_goes_here')`-- before we could reference it with the `icon-image` layout property. Note that we use the `icon-allow-overlap` option to specify that it is OK if the icons overlap one another. This ensures the icons will display at any zoom level, though they may overlap one another when the map is significantly zoomed out.
 
@@ -119,13 +119,10 @@ In this code, we use the `layout` option to define the icon that will display fo
 
 Hover-over effects do not work particularly well with touch-screen mobile devices, so whenever we're designing for mobile, it is best to use 'click' event listeners (which are also effective with taps) rather than 'mousemove' listeners. Let's start with a popup for the Hospital layer. At the bottom of your JavaScript file, add the following code:
 
-```
+```javascript
 var popup = new mapboxgl.Popup();
-
 map.on('click', 'hospitals', function(e) {
-
   var feature = e.features[0];
-
   popup.setLngLat(feature.geometry.coordinates)
     .setHTML(feature.properties.NAME)
     .addTo(map);
@@ -148,7 +145,7 @@ We'll achieve these tasks one by one in the next step.
 
 First, let's add a link to the Turf library in the head of our index file.
 
-```
+```html
 <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
 ```
 
@@ -192,37 +189,38 @@ Next, let's do something with the results of the nearest calculation. We want to
 Note that the square brackets in the `features: [ ]` section of code represent a JavaScript array that would ordinarily contain coordinate pairs or other feature geometry that we might typically see in a GeoJSON. However, we've left this blank and will add feature geometry to the array based on where the user clicks on the map. Next, inside the function that runs when a library is clicked, add the following:
 
 ```javascript
-    // Update the 'nearest-hospital' data source to include the nearest library
+	// Update the 'nearest-hospital' data source to include the nearest library
 	map.getSource('nearest-hospital').setData({
-      type: 'FeatureCollection',
-      features: [
-        nearestHospital
-      ]
-    });
+      	    type: 'FeatureCollection',
+      	    features: [
+               nearestHospital
+      	    ]
+    	});
 
-    // Create a new circle layer from the 'nearest-hospital' data source
-    map.addLayer({
-      id: 'nearestHospitalLayer',
-      type: 'circle',
-      source: 'nearest-hospital',
-      paint: {
-        'circle-radius': 12,
-        'circle-color': '#486DE0'
-      }
-    }, 'hospitals');
+	// Create a new circle layer from the 'nearest-hospital' data source
+	map.addLayer({
+      	    id: 'nearestHospitalLayer',
+	    type: 'circle',
+	    source: 'nearest-hospital',
+	    paint: {
+		'circle-radius': 12,
+		'circle-color': '#486DE0'
+	    }
+	}, 'hospitals');
 
 ```
 
-Now, when you click a library, you should see a blue circle appear around the nearest hospital to that library. Well done! Finally, let's add a popup that gives the library name and information about the nearest hospital. This information is stored inside the GeoJSONs that are in our data files. Still inside the function that runs when a library is clicked, add the following:
+Now, when you click a library, you should see a blue circle appear around the nearest hospital to that library. Test this and troubleshoot your code as necessary if it does not work as expected. Finally, let's add a popup that gives the library name and information about the nearest hospital. This information is stored inside the GeoJSONs that are in our data files. Still inside the function that runs when a library is clicked, add the following:
 
 ```javascript
+//Add popup that gives name of the library and the name and address of the nearest hospital
 popup.setLngLat(refLibrary.geometry.coordinates)
     .setHTML('<b>' + refLibrary.properties.NAME + '</b><br>The nearest hospital is ' + nearestHospital.properties.NAME + ', located at ' + nearestHospital.properties.ADDRESS)
     .addTo(map);
 
 ```
 
-Congratulations! With ~80 lines of code or so, you've (hopefully) succeeded at making a tool that will allow library staff to find their nearest hospital in Tacoma. As you test this in the browser, you may notice that on the second and any subsequent library clicks you make, you get an error message in the console that reads "Error: Layer with id "nearestHospitlaLayer" already exists on this map." This is because the function we execute with the `map.getSource('nearestHospital').setData` bit of code is trying to add data to a feature collection that already contains data, whereas on the first click, that feature collection is blank. For this application, we can safely ignore this message. 
+Save and test. With ~80 lines of code or so, you've (hopefully) succeeded at making a tool that will allow library staff to find their nearest hospital in Tacoma. As you test this in the browser, you may notice that on the second and any subsequent library clicks you make, you get an error message in the console that reads "Error: Layer with id "nearestHospitlaLayer" already exists on this map." This is because the function we execute with the `map.getSource('nearestHospital').setData` bit of code is trying to add data to a feature collection that already contains data, whereas on the first click, that feature collection is blank. For this application, we can safely ignore this message. 
 
 ### Step 4: Use Turf to add a distance calculation to your popup
 
@@ -237,7 +235,12 @@ You should be able to achieve this with the addition of just 4 lines of code and
 - Think about where the additional line(s) of code need to be placed within your existing code.
 - Since the from and to points require coordinates, think about how to get those coordinates using variables that are already named in your code.
 
-Finally, add a title and brief explanatory text to the map to explain what it does to a potential user of the tool you've built. Cite the data sources for the library and hospitals based on the links in Step 1 of these instructions. Ensure that the layout works well on both the mobile device simulator and on the desktop browswer view. 
+### Step 5: Final preparation
+Finally, complete these steps before submitting your work: 
+* Add a title and brief explanatory text to the map to explain what it does to a potential user of the tool you've built. Ensure that  layout works well on both the mobile device simulator and on the desktop browser view. 
+* Either with explanatory text or using the [attribution control](https://docs.mapbox.com/mapbox-gl-js/api/markers/#attributioncontrol), cite the data sources for the library and hospitals based on the links in Step 1 of these instructions. 
+* Tidy up your code (i.e. delete extraneous line spaces and ensure good tabbing)
+* Optionally, change the basemap or other styling to your liking 
 
 ### Submission
 
@@ -256,9 +259,9 @@ Browse the Turf JS documentation and the different methods it makes available. C
   * Answer: `.addLayer`. This gets appended to the map object, once for the libraries layer and once for the hospitals layer.
 * If we wanted to do something with the libraries layer later, such as add clickable pop-ups to the features, what id would we use to reference the layer? 
   * Answer: 'libraries'. This should be an easy one. :) Remember that we can change that id to any string value we want, and if we reference it later, we just need to use that same id. 
-* Both of these layers are of the type `symbol`, which essentially means the layer is composed of point features represented by an icon. By recalling from Lab 1, and/or by consulting the [Mapbox layer documentation](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/), what is the Mapbox layer type keyword for a polygon layer? 
+* Both of these layers are of the type `symbol`, which essentially means the layer is composed of point features represented by an icon. By recalling from fall quarter's Intro to Mapbox lab and/or by consulting the [Mapbox layer documentation](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/), what is the Mapbox layer type keyword for a polygon layer? 
   * Answer: fill 
-* You've seen the `paint` option before in Lab 1, but `layout` is new. According to [the Mapbox GL JS documentation](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layer-sub-properties) what is the difference between layout properties and paint properties? 
+* You've seen the `paint` option before in fall quarter's Intro to Mapbox lab but `layout` is new. According to [the Mapbox GL JS documentation](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layer-sub-properties) what is the difference between layout properties and paint properties? 
   * Answer: both properties affect how the layer is displayed, but layout properties are applied asynchronously and paint properties are applied synchronously. The difference is technical, not aesthetic, where properties that are technically slower to display are made asynchronously so as to ensure a smooth rendering process for the user. The Mapbox Style Specification documentation lists whether each one of the style properties we can apply to a map is a layout property or a paint property. 
 * Where does the keyword 'hospitalPoints' come from? 
   * Answer: This is the name of the variable we declared in the hospitals.js file to hold the hospitals GeoJSON.  
