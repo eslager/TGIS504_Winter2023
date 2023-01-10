@@ -235,7 +235,12 @@ You should be able to achieve this with the addition of just 4 lines of code and
 - Think about where the additional line(s) of code need to be placed within your existing code.
 - Since the from and to points require coordinates, think about how to get those coordinates using variables that are already named in your code.
 
-Finally, add a title and brief explanatory text to the map to explain what it does to a potential user of the tool you've built. Cite the data sources for the library and hospitals based on the links in Step 1 of these instructions. Ensure that the layout works well on both the mobile device simulator and on the desktop browser view. 
+### Step 5: Final preparation
+Finally, complete these steps before submitting your work: 
+* Add a title and brief explanatory text to the map to explain what it does to a potential user of the tool you've built. Ensure that  layout works well on both the mobile device simulator and on the desktop browser view. 
+* Either with explanatory text or using the [attribution control](https://docs.mapbox.com/mapbox-gl-js/api/markers/#attributioncontrol), cite the data sources for the library and hospitals based on the links in Step 1 of these instructions. 
+* Tidy up your code (i.e. delete extraneous line spaces and ensure good tabbing)
+* Optionally, change the basemap or other styling to your liking 
 
 ### Submission
 
