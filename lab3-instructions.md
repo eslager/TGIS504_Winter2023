@@ -1,12 +1,12 @@
 # Lab 3: Web mapping with projections and OpenLayers
 
-## TGIS 504, Winter 2022, Dr. Emma Slager
+## TGIS 504, Winter 2023, Dr. Emma Slager
 
 ## Students! If you are looking ahead, note that these instructions are still being tested and updated! This message will be removed when they are ready to actually use. 
 
 ### Introduction
 
-In this lab, we'll be working with a new web mapping framework, OpenLayers. Much like Mapbox and Leaflet, OpenLayers has an API that we can access and utilize using a CDN, but the OpenLayers documentation expects that most users will instead create their applications using JavaScript modules. To this end, OpenLayers is available on the node package management platform Node.JS. We use Node.JS using the command prompt and a specific interface called NPM (node package manager). NPM is a levelling up of your web development skills, and it can be a bit intimidating at first, but I promise you'll get the hang of it in no time. In fact, it's incredibly powerful, and I suspect by the end of this lab you might even be wondering why I haven't introduced it sooner. 
+In this lab, we'll be working with a new web mapping framework, OpenLayers. Much like Mapbox and Leaflet, OpenLayers has an API that we can access and utilize using a CDN, but the OpenLayers documentation expects that most users will instead create their applications using JavaScript modules. To this end, OpenLayers is available on the node package management platform Node.js. We use Node.js using the command prompt and a specific interface called NPM (node package manager). NPM is a levelling up of your web development skills, and it can be a bit intimidating at first, but I promise you'll get the hang of it in no time. In fact, it's incredibly powerful, and I suspect by the end of this lab you might even be wondering why I haven't introduced it sooner. 
 
 We'll use NPM to set up, test, and eventually deploy our web map websites in this lab. The map you'll be making in this lab will not use WGS 84, Web Mercator, or any other rectangular projection. 
 
@@ -14,13 +14,15 @@ We'll use NPM to set up, test, and eventually deploy our web map websites in thi
 
 #### Installing Node.js and checking to see if you have Git installed
 
-OK, first things first. To use NPM, we first need two other softwares: Node.JS and Git. If you are working on the lab computers, these are already installed and you can skip ahead to step 2. If you are working on a personal computer, follow the steps below to install Node.JS and Git. 
+OK, first things first. To use NPM, we first need two other softwares: Node.js and Git. If you are working on the lab computers, these are already installed and you can move on to the next heading ("Using Command Line"). If you are working on a personal computer, follow the instructions below to install Node.js. 
 
-To install Node.JS, go to [the download website](https://nodejs.org/en/) and install the version appropriate for your operating system. Though version 19 is available, I recommend v18, which is currently recommended for most users while bugs in v19 are still identified and fixed.  
+To install Node.js, go to [the download website](https://nodejs.org/en/) and install the version appropriate for your operating system. Though version 19 is available, I recommend v18, which is currently recommended for most users while bugs in v19 are still identified and fixed.  
+
+#### Using Command Line
 
 Next, open up the command line interface for your computer. For Windows, search for the Command Prompt application, for Mac, search for Terminal. If you're using Linux, I assume you know how to find your command line interface already. :)
 
-Command line is a way of interacting with your computer using, well, commands instead of a graphical user interface, or GUI. For instance, if I told you to navigate to the folder where you're storing your files for TGIS 504, you might open up your file manager and click folder icons until you get to the folder you want to get to. Or, you could get there using command line. For instance, type `dir` into the command line interface and press Enter. You should see a list of all the folders on your computer. You could type `cd` (for change directory) then a space, then the name of one of those folders to open that folder, just as you would by clicking in the file manager GUI. 
+Command line is a way of interacting with your computer using text commands instead of a graphical user interface, or GUI. For instance, if I told you to navigate to the folder where you're storing your files for TGIS 504, you might open up your file manager and use your mouse click folder icons until you get to the folder you want to get to. Or, you could get there using command line. For instance, type `dir` into the command line interface and press Enter. You should see a list of all the folders on your computer. You could type `cd` (for change directory) then a space, then the name of one of those folders to open that folder, just as you would by clicking in the file manager GUI. 
 
 Let's use the command line to see if you have Git installed on your computer already. Type
 
@@ -32,17 +34,15 @@ into the command line and hit Enter. The output will either tell you which versi
 
 It's likely that you already have Git installed, because it is frequently installed with GitHub Desktop. Also, it tends to be installed by default on Mac and Linux machines. But if you don't have Git installed, follow the instructions [on this website](https://github.com/git-guides/install-git) to install it from an Installer. You should be able to accept all the default settings in the installer. 
 
-Once you've installed Git, quit and restart your command prompt. Type `git version` and hit Enter, and this time you should see the version of Git that you have installed, confirming that it is indeed installed. 
+Once you've installed Git, quit and restart your command line interface. When you have it open again, type `git version` and hit Enter, and this time you should see the version of Git that you have installed, confirming that it is indeed installed. 
 
 ### Step 2: Use npm to set up your OpenLayers application
-
-
 
 In the command line interface, navigate to the folder on your hard drive where you store your lab files for this class. I recommend you do this in the following way, but if you know enough about command line already to do this yourself, feel free to do so: 
 
 * Open your file manager and find the full path name for the folder where you store your files. I assume you know how to find a pathname from your past GIS work, so Google this if you need a refresher. For instance, when I test the labs, I store my files on my C:/ drive, in a series of folders with the following pathname: C:\Users\ejslager\Dropbox\UW_Tacoma\teaching\TGIS_504\2022Winter\Labs. 
 
-* Copy this pathname
+* Once you've located the pathname for your lab folder, copy the pathname
 
 * Type `cd` in the command line, then a space, then paste the pathname. For instance, mine looks like: 
 
@@ -54,27 +54,28 @@ In the command line interface, navigate to the folder on your hard drive where y
   mkdir lab3 && cd lab3
   ```
 
-* This makes a directory (folder) with the `mkdir` command and names it lab3. Then with the `cd` (change directory) command, we open that new folder. 
+* This makes a directory (folder) with the `mkdir` command and names it lab3. Then with the `cd` (change directory) command, we open that new folder. If you get an error message, carefully check your command to find any typos and try again. 
 
 * Next, enter the following: 
 
   ```
-  npx create-ol-app
+  npm create ol-app ol-lab
   ```
 
-* This will install the `ol` package, the main library for OpenLayers. It will also set up a development environment with additional dependencies (think of these as sub-libraries), and give you an index.html and main.js files, which will be the starting point for the application. 
+* This will create a folder called `ol-lab` (you can choose another name if you wish) and install the `ol` package, the main library for OpenLayers. It will also set up a development environment with additional dependencies (think of these as sub-libraries), and give you an index.html, main.js, and style.css files, which will be the starting point for the application. 
 
 * Next, enter the following: 
 
   ```
+  cd ol-lab
   npm install proj4
   ```
 
-* This install an additional javascript library, [Proj4](https://github.com/proj4js/proj4js), which we'll use for projections. 
+* This opens the ol-lab folder, then installs an additional javascript library, [Proj4](https://github.com/proj4js/proj4js), which we'll use for projections. 
 
 In your file manager (Windows Explorer, or MacOS Finder), navigate to your new lab3 folder and check that there is indeed now a bunch of stuff stored in that folder. Yahoo! Well done. 
 
-Open the Index.html file in Atom or your preferred text editor. It should be a relatively familiar boiler plate index file, with a `<div>` with the id 'map' and a link to some JavaScript in the 'main.js' file. 
+Open the Index.html file in VS Code or your preferred text editor. It should be a relatively familiar boiler plate index file, with a `<div>` with the id 'map' and a link to some JavaScript in the 'main.js' file. 
 
 Back in command line, enter
 
@@ -86,15 +87,15 @@ This will take a brief moment, and then you should get a message that looks like
 
 ![Command screenshot 2](images/command2.PNG)
 
-This is telling us that we've set up and started a local server for testing our files, just like we would through atom-live-server in Atom. Open up your preferred web browser, and type the Local url listed in your command line into browser bar. That url *should* be http://localhost:3000/, but it may use a different port number if your settings are somehow different from mine. 
+This is telling us that we've set up and started a local server for testing our files, just like we would through atom-live-server in Atom or the live server in VS Code. Open up your preferred web browser, and type the Local url listed in your command line into browser bar. That url is likely http://localhost:3000/ or http://localhost:5173/, but it may use a different port number if your settings are somehow different from mine. 
 
 When the page loads, you should see a map! Once you get past the unfamiliarity of command line, it's a pretty easy way to set up your mapping environment, no? If things haven't gone as expected and you don't see the map, reach out to me and we'll get you sorted out right away. 
 
 ### Step 3: Using the OpenLayers API to add data to the map and style it
 
-For now, we'll be back to familiar territory for a bit, using Atom to work with the HTML, JS, and CSS. 
+For now, we'll be back to familiar territory for a bit, using VS Code to work with the HTML, JS, and CSS. 
 
-In Atom, let's look at our files and figure out what's going on. Open 'main.js': 
+In VS Code, let's look at our files and figure out what's going on. Open 'main.js': 
 
 ```javascript
 import './style.css';
@@ -116,7 +117,7 @@ const map = new Map({
 });
 ```
 
-The four lines at the top that begin with `import` may be unfamiliar to you, though I've seen this in some of y'all's code already. The `import` statement is a way of linking to other files, similar to what we do when, for instance, we link to the leaflet CSS and JS libraries in the head of our index when we're creating a leaflet map. If you poke around inside the `node_modules` folder inside the lab3 folder, you should be able to find the folders and files being referenced in those `import` statements. 
+The four lines at the top that begin with `import` may be unfamiliar to you, though I've seen this in some of y'all's code already. The `import` statement is a way of linking to other files, similar to what we do when, for instance, we link to the leaflet CSS and JS libraries in the head of our index when we're creating a leaflet map. If you poke around inside the `node_modules` folder inside the lab3/ol-lab folder, you should be able to find the folders and files being referenced in those `import` statements. 
 
 What you should understand about this at this time is that we're linking to different modules, or sections of the OpenLayers library, so that we're loading into our website only the parts of the source code that we need to make the map work. This will improve the performance of our web page and map considerably. 
 
@@ -131,7 +132,7 @@ import VectorSource from 'ol/source/Vector';
 
 ```
 
-Next, we're going to need GeoJSON **data**. In the GitHub repository for this class, you can find a data file called `nps-project.json`. Download this if you haven't already, and move it into your lab3 folder. This is a polygon feature collection of all of the US National Parks, National Monuments, National Historic Sites, and other properties managed by the National Parks Service. I downloaded it from [this source](https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?location=12.665142%2C-12.497900%2C1.77), then reprojected it, simplified its attributes and geometry, and converted to GeoJSON. 
+Next, we're going to need GeoJSON **data**. In the GitHub repository for this class, you can find a data file called `nps-project.json`. Download this if you haven't already, and move it into your ol-lab folder. This is a polygon feature collection of all of the US National Parks, National Monuments, National Historic Sites, and other properties managed by the National Parks Service. I downloaded it from [this source](https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?location=12.665142%2C-12.497900%2C1.77), then reprojected it, simplified its attributes and geometry, and converted to GeoJSON. 
 
 Next, change the part of your JavaScript code that specifies the `layers` to add to the map to the following: 
 
@@ -149,13 +150,13 @@ layers: [
   ],
 ```
 
-After the existing TileLayer, we've added a VectorLayer. We've specified the source of that VectorLayer as the nps-project.json file, and formatted it as a GeoJson. Preview your changes on the local server, and you should now see the data on your map. 
+After the existing TileLayer (the basemap tiles), we've added a VectorLayer. We've specified the source of that VectorLayer as the nps-project.json file, and formatted it as a GeoJson. Preview your changes on the local server, and you should now see the data on your map. 
 
 ### Step 4: Projection
 
 So far, OpenLayers probably feels pretty familiar to you. It's very much like Mapbox and Leaflet: a JavaScript library with a series of methods and parameters that let you display a map, add layers to the map, and (eventually) add style and interactivity to the layers. So let's move into the unfamiliar territory of working with projections in a web map. 
 
-For a whole host of reasons covered in lecture and readings, the vast majority of interactive web maps on the Internet use the Web Mercator projection, with data layered in usually using the unprojected WGS84 datum. Web Mercator is conveniently cylindrical, making it easy to quickly render square tiles that cover the whole surface of the earth to make up the map. As you know however, Mercator projections have many, many limitations, related to cartographic design, analytical accuracy, and cognitive implications. 
+For a whole host of reasons covered in lecture and readings, the vast majority of interactive web maps on the Internet use the Web Mercator projection, with data overlays usually using the unprojected WGS84 datum. Web Mercator is conveniently cylindrical, making it easy to quickly render square tiles that cover the whole surface of the earth to make up the map. As you know however, Mercator projections have many, many limitations, related to cartographic design, analytical accuracy, and cognitive implications. 
 
 So for this map, we're going to map National Parks not based on Web Mercator, but based instead on the [US National Atlas Equal Area projection](https://spatialreference.org/ref/epsg/us-national-atlas-equal-area/), a conic equal area projection optimized for the US to minimize distortions of shape and direction. 
 
@@ -169,7 +170,7 @@ import {fromLonLat} from 'ol/proj';
 import {register} from 'ol/proj/proj4';
 ```
 
-The Projection module allows us to define the projection for our map, instead of using the default Web Mercator. The proj4 module gives us access to the Proj4.js library (not part of OpenLayers, but a library that works well with OpenLayers, if we also include the projf4 register module from OL). The other two modules give us some additional functionality needed to work with projections and coordinate pairs (which are unprojected). 
+The Projection module allows us to define the projection for our map, instead of using the default Web Mercator. The proj4 module gives us access to the Proj4.js library (not part of OpenLayers, but a library that works well with OpenLayers, if we also include the proj4 register module from OL). The other two modules give us some additional functionality needed to work with projections and coordinate pairs (which are unprojected). 
 
 By default, OpenLayers only supports two projections: Web Mercator and WGS84, but with the Proj4 library, we can get access to thousands more in the EPSG registry. The first addition we'll make after the imports, then, is to specify what projection we want to work with. 
 
@@ -224,6 +225,8 @@ You'll notice that the sharpness of the image quality is lost a bit. This is an 
 OK, enough with the cookbook instructions and the copying and pasting! At this point, you should be able to read JavaScript documentation and figure out how to do things like style a GeoJSON and make it interactive. In this step, your task is to do just that. Use the OpenLayers documentation, your ability to read a GeoJSON file, and your wits to figure out how to style the map so that the National Parks (as opposed to the National Historic Sites, National Landmarks, etc.) are a different color polygon than the other features. 
 
 I recommend using [this tutorial](https://openlayers.org/workshop/en/vector/style.html) to help you with the styling. It comes from a longer OpenLayers workshop but covers the concepts you will need to complete this step. Remember that you'll need to import modules AND write your methods. If you get a message in the JS console that some method you use is undefined, chances are good you forgot to import the necessary module(s). 
+
+Remember as well that you will need to examine the nps-project.json file to figure out which property stores the information about whether a site is a national park or another NPS site. 
 
 If you're feeling ambitious and want to challenge yourself for bonus points, search for documentation, tutorials, and/or forum posts that will help you figure out how make the features clickable so that the user can click a polygon to get a pop-up that tells them the name of the park and any other information from the GeoJSON you want to include. 
 
