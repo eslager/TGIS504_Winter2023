@@ -2,7 +2,7 @@
 
 ## TGIS 504, Winter 2023, Dr. Emma Slager
 
-## Students! If you are looking ahead, note that these instructions are still being tested and updated! This message will be removed when they are ready to actually use. 
+## *This lab will not be formally assigned, but I encourage you to work through it and I will review the key learning goals in class next week.*  
 
 ### Introduction
 
