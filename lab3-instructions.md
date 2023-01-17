@@ -226,7 +226,7 @@ OK, enough with the cookbook instructions and the copying and pasting! At this p
 
 I recommend using [this tutorial](https://openlayers.org/workshop/en/vector/style.html) to help you with the styling. It comes from a longer OpenLayers workshop but covers the concepts you will need to complete this step. Remember that you'll need to import modules AND write your methods. If you get a message in the JS console that some method you use is undefined, chances are good you forgot to import the necessary module(s). 
 
-Remember as well that you will need to examine the nps-project.json file to figure out which property stores the information about whether a site is a national park or another NPS site. 
+Use what you learned last quarter about conditional styling (if/else statements may come in handy) and remember as well that you will need to examine the nps-project.json file to figure out which property stores the information about whether a site is a national park or another NPS site. 
 
 If you're feeling ambitious and want to challenge yourself for bonus points, search for documentation, tutorials, and/or forum posts that will help you figure out how make the features clickable so that the user can click a polygon to get a pop-up that tells them the name of the park and any other information from the GeoJSON you want to include. 
 
@@ -234,12 +234,12 @@ If you're feeling ambitious and want to challenge yourself for bonus points, sea
 
 The final step is to put your finished product on the web so that you can submit a URL to your work. You *could* do this the same way we've been doing it all through the program so far: upload all your files to a GitHub repository, turn on Pages, and call it good. However, that would mean that you have to package up the entire OpenLayers library you downloaded, and it would waste all the effort we went to to include just the specific modules we needed. Instead, follow these steps to make a `dist` folder with just the parts of the library you need, and all the code and data you added yourself. 
 
-Return to the command prompt. If you closed it between Part 1 and now, you'll have to navigate again (using the `cd` command) to your lab3 folder. Once inside the lab3 folder, enter
+Return to the command prompt. If you closed it between Part 1 and now, you'll have to navigate again (using the `cd` command) to your lab3/ol-lab folder. Once inside the ol-lab folder, enter
 
 ```
 npm run build
 ```
 
-This runs a module that will collect just the modules you imported, plus your web files, and package them in a `dist` (for distribution) folder that you can upload to GitHub. Find that `dist` folder inside the lab3 folder. ***Important ***: for some reason that I can't quite figure out, the geojson data file will not be copied into the dist folder. Copy and paste the nps-project.json file into the dist folder manually, then upload ONLY the files in the dist folder (plus your geojson data file) to a new GitHub repository, NOT the whole lab3 folder. 
+This runs a module that will collect just the modules you imported, plus your web files, and package them in a `dist` (for distribution) folder that you can upload to GitHub. Find that `dist` folder inside the lab3 folder. ***Important not from last year (may no longer be relevant)***: for some reason that I can't quite figure out, the geojson data file will not be copied into the dist folder. Copy and paste the nps-project.json file into the dist folder manually, then upload ONLY the files in the dist folder (plus your geojson data file) to a new GitHub repository, NOT the whole ol-lab folder. 
 
 Once you've uploaded, activate Pages and test out the live version to make sure everything works. Submit your URL on Canvas. There is no write-up for this lab, but if you want to provide any feedback on this lab or the instructions, please feel free to do so. It's a new one and would certainly benefit from the thoughtful suggestions this cohort always provides! 
