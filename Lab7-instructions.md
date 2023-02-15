@@ -130,7 +130,7 @@ INSERT INTO lab_7_name (geom, name, description) VALUES (
 );
 ```
 
-After changing the name of the table in the first line of the query to match your table's name, run the `SELECT *` query on your table confirm that the data was added. 
+After changing the name of the table in the first line of the query to match your table's name, hit Enter. Next, run the `SELECT *` query on your table to confirm that the data was added. 
 
 The SQL command we used to add this data looks quite long and complex, so let's walk through it. Note first that the high-level structure used to specify the column names and values to insert looks like this: 
 
