@@ -351,9 +351,9 @@ Here is the code for the SQL query construction:
                 enteredDescription + "')";
             console.log(sql);
 ```
-Here we've made some adjustments to what happens with the `drawing` variable, which in Lab 6 we simply printed to the console. First: **change the name of the table in the sql statement from `YourTableName` to *your* table's name.** Now that that's done, what's happening here is you're writing a SQL command to insert data into your table. This is just like what we did in part 1.2 above, only you're writing the SQL command in JavaScript instead of in the SQL interface in CARTO, and you're using variables to construct the query dynamically from user inputs. Just like before, you're converting the geometry of the shape from GeoJSON to WKB, using EPSG code 4326 to indicate that the coordinates are in WGS 84. You're also setting the values to be inserted into the `name` and `description` columns equal to what the user entered in the popup form. To help us double check our work, we're also using `console.log` to see in the browser's JS console what's being submitted to the database. 
+Here we've made some adjustments to what happens with the `drawing` variable, which in Lab 6 we simply printed to the console. First: **change the name of the table in the sql statement from `YourTableName` to *your* table's name.** Now that that's done, what's happening here is you're writing a SQL command to insert data into your table. This is just like what we did in part 1.2 above, only you're writing the SQL command in JavaScript instead of in the command line interface, and you're using variables to construct the query dynamically from user inputs. Just like before, you're converting the geometry of the shape from GeoJSON to WKB, using EPSG code 4326 to indicate that the coordinates are in WGS 84. You're also setting the values to be inserted into the `name` and `description` columns equal to what the user entered in the popup form. To help us double check our work, we're also using `console.log` to see in the browser's JS console what's being submitted to the database. 
 
-In the code under the next comment, we actually send the data to the database with the CARTO SQL API: 
+In the code under the next comment, we actually send the data to the database with the SQL API: 
 
 ```Javascript
             // Send the data
@@ -394,7 +394,7 @@ Save your changes and preview in the browser. Draw a shape on your map, enter so
 
 Logged to the console, you should see an SQL statement with the geometry of the shape you drew and values for the non-spatial attributes based on what you entered in the form. Additionally, you should see a message that the data was saved. Refresh the page and your newly drawn shape should still show up. If you instead get an error message, check your code for mistakes and try again. 
 
-#### 4.2. A note about permissions
+### 5. A note about permissions
 
 Any database is always associated with one or more database users, who are granted a specific set of privileges. When you set up your ArcGIS Online database for the ArcGIS Field Maps map you made in Lab 4, you granted 'Add,' 'Delete', and 'Update' privileges to members of your MSGT cohort, for instance. We typically talk about database user privileges in terms of various roles. For example, an administrator may have the maximal set of privileges, meaning they can do anything in the database: reading and writing into tables, creating new tables, deleting existing tables, adding or removing other uses, and so on. On the other hand, a read-only user may have a more limited set of privileges so that they can only consume data from the database but cannot make changes to any tables. 
 
