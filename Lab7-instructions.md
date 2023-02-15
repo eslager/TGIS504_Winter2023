@@ -219,7 +219,7 @@ would return:
 
 Any SQL query that contains a column with the data format 'geometry' will return results in the GeoJSON format. This table has a column called 'geom' with data in the 'geometry' format, and so the result is a GeoJSON. Because the returned file is in GeoJSON format, we can import it into a Leaflet map quite easily. In the next step, we'll use a call to the SQL API to display data on our map. 
 
-### 3. Displaying data from CARTO in Leaflet
+### 3. Displaying data from the database in Leaflet
 
 In VS Code, open the Project Folder for the Lab 7 testing files you downloaded from GitHub, and open the JavaScript file. Take a moment to familiarize yourself with the code, noting that it is very similar to the code you wrote in Lab 6, with a simpler HTML form for collecting attributes. From top to bottom, it should achieve the following: 
 
