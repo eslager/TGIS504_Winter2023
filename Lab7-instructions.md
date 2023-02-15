@@ -4,7 +4,9 @@
 
 ### Introduction
 
-In Lab 6, you set up a data collection tool that allowed users to draw shapes on a map using Leaflet.draw and entered attribute data for those shapes using an HTML form. However, the drawn layers were not stored anywhere, just printed to the console. In addition to an input interface, to have a functional data collection tool, we also need a permanent storage location and a mechanism for writing user input to that location. In this lab, therefore, you will set up and configure a database to store user-submitted information so that it can be retrieved, displayed, and analyzed at a later time. 
+In Lab 6, you set up a data collection tool that allowed users to draw shapes on a map using Leaflet.draw and entered attribute data for those shapes using an HTML form. However, the drawn layers were not stored anywhere, just printed to the console. In addition to an input interface, to have a functional data collection tool, we also need a permanent storage location and a mechanism for writing user input to that location. In this lab, therefore, you will set up and configure a database table to store user-submitted information so that it can be retrieved, displayed, and analyzed at a later time. 
+
+This lab is based on the exercises in [Chapter 13 of Michael Dormer's _Introduction to Web Mapping_](http://132.72.155.230:3838/js/collaborative-mapping.html), with modifications and additions by myself. 
 
 *Lab 7 starter files*
 
