@@ -39,11 +39,12 @@ SSH stands for Secure Shell, the protocol we're using to make the connection. ge
 
 Press enter and you will be prompted to enter a password. The password for genuser is 504MSGT. Type this (remember that the characters will not appear on the screen) and press enter. 
 
-Next, you will log in to the database. I've set up an account for each of you and will give you your credentials separately. User your credentials to log in. The general command for logging in is as follows: 
+Next, you will log in to the database. I've set up an account for each of you and will give you your credentials separately. Use your credentials to log in. The general command for logging in is as follows: 
 
 ```bash
 psql -h localhost -U yourusername gisdb
 ```
+Hit enter and you will be prompted to enter a password. Enter the password that I shared with you when I assigned you your username. 
 
 `psql` is how we access postgreSQL commands, `-h localhost` specifies that we want to log in with the localhost port, `-U yourusername` is how you specify which user to log in as, and `gisdb` is the name of the database. 
 
