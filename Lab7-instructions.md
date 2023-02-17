@@ -409,6 +409,7 @@ If at some point in the future you wanted to disable the ability for a `readonly
 REVOKE INSERT ON TABLE table_name
   FROM readonlyuser; 
 ```
+***note***: It seems some of you did not read the instructions above this code block very carefully and you executed this command, revoking privileges from the readonlyuser on your tables. Please note that you should not revoke insert privileges unless and until data collection is complete. Re-read the paragraphs preceding this code block to figure out how to fix your mistake. 
 
 ### 6. Setting up a table for your Lab 6 data collection scenario
 
