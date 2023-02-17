@@ -328,7 +328,13 @@ With this:
             console.log(sql);
 
             // Send the data
-            fetch(url + encodeURI(sql))
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "q=" + encodeURI(sql)
+            })
             .then(function(response) {
                 return response.json();
             })
