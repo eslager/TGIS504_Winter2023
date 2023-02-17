@@ -218,11 +218,38 @@ would return:
 ```
 -->
 
-Any SQL query that contains a column with the data format 'geometry' will return results in the GeoJSON format. This table has a column called 'geom' with data in the 'geometry' format, and so the result is a GeoJSON. Because the returned file is in GeoJSON format, we can import it into a Leaflet map quite easily. In the next step, we'll use a call to the SQL API to display data on our map. 
+Any SQL query that contains a column with the data format 'geometry' will return results in the GeoJSON format. This table has a column called 'geom' with data in the 'geometry' format, and so the result is a GeoJSON. Because the returned file is in GeoJSON format, we can import it into a Leaflet map quite easily. In the step 4, we'll use a call to the SQL API to display data on our map. But first, we need to update permissions. 
 
-### 3. Displaying data from the database in Leaflet
+### 3. Updating permissions on the new table
 
-In VS Code, open the Project Folder for the Lab 7 testing files you downloaded from GitHub, and open the JavaScript file. Take a moment to familiarize yourself with the code, noting that it is very similar to the code you wrote in Lab 6, with a simpler HTML form for collecting attributes. From top to bottom, it should achieve the following: 
+Any database is always associated with one or more database users, who are granted a specific set of privileges. When you set up your ArcGIS Online database for the ArcGIS Field Maps map you made in Lab 4, you granted 'Add,' 'Delete', and 'Update' privileges to members of your MSGT cohort, for instance. We typically talk about database user privileges in terms of various roles. For example, an administrator may have the maximal set of privileges, meaning they can do anything in the database: reading and writing into tables, creating new tables, deleting existing tables, adding or removing other uses, and so on. On the other hand, a read-only user may have a more limited set of privileges so that they can only consume data from the database but cannot make changes to any tables. 
+
+When we access the database in the next step with the SQL API, we will do so as the default public user. When we create a new table, the default public user has no access to that table. In this step, you will give the default public user two sets of permissions: read permissions (so they can see data that is in the table) and write permissions (so they can send new data records to the table). 
+
+To give the default public user read permissions to your new table, enter the following command in the command prompt, replacing `table_name` with your table's name: 
+
+```sql
+GRANT SELECT ON table_name TO PUBLIC;
+```
+You should see the response GRANT confirming that you successfully granted the permissions. Now, ordinarily, we would usually only grant **read** permissions to the public user, not **write** permissions that would allow them to modify the table. For the most secure application, we would want to grant write permissions only to authenticated users with named user accounts or known identities, but this would require settign up a dynamic server with an authentication system, which is outside the scope of this lab. So we'll get around this by granting limited write permissions to the deafult public user. Enter the following command, again replacing `table_name` with your table's name: 
+
+```sql
+GRANT INSERT ON table_name TO PUBLIC;
+```
+
+For a simple crowdsourcing app, intended for a trusted audience, we have granted `INSERT` privileges to the default public user as a simple way to enable users of the interface you created in Lab 6 to add data to the database. In a way, this makes our database exposed: anyone who enters our web page will be able to insert new records into the table. On the other hand, the worst-case scenario is just that our table will be filled with many unnecessary records. The only privilege we have granted is `INSERT`, which means that public user cannot delete any previously entered records or modify the table in any other way. Moreover, when the URL for our page is shared with a trusted audience, such as among students taking a survey in a class, the chances of someone taking the trouble of finding our page and intentionally sabotaging our database by filling it with a large amount of fake records is very small. If this were a professional deployment, however, we would want to set up a dynamic server with an authentication system to enable only authenticated users to modify the database. 
+
+If at some point in the future you wanted to disable the ability for the default public user to insert data into the table, for example when data collection is completed and we do not want to accept any more entries, you can always **revoke** the privilege granted to insert data into the table as follows:
+
+```sql
+REVOKE INSERT ON TABLE table_name
+  FROM PUBLIC; 
+```
+***note***: Please note that you should not revoke insert privileges unless and until data collection is complete. If you were rushing through these instructions and executed the code block above in your rush, please re-read the paragraphs preceding this code block to figure out how to fix your mistake. 
+
+### 4. Displaying data from the database in Leaflet
+
+Now that we've got the database table set up, let's start working with the map and JavaScript. In VS Code, open the Project Folder for the Lab 7 testing files you downloaded from GitHub, and open the JavaScript file. Take a moment to familiarize yourself with the code, noting that it is very similar to the code you wrote in Lab 6, with a simpler HTML form for collecting attributes. From top to bottom, it should achieve the following: 
 
 * initialize a map, set the default view and base map tile layer
 * create an editable feature group named `drawnItems`
@@ -272,7 +299,7 @@ Save your changes and preview in your browser. Navigate in the map to Tacoma, an
 
 If you don't see the point above, check your work to identify any typos or errors, using the JavaScript console to help, before moving on to the next step. 
 
-### 4. Sending user inputs to the database 
+### 5. Sending user inputs to the database 
 
 In step 3 you displayed data *from* the database on your map; now it's time to send user inputs from your map *to* the database. 
 
@@ -391,25 +418,9 @@ Finally, let's look at the code under the last comment:
 
 This part of the code transfers the drawn data to the `tableData` layer to display it on the map without reloading the map. Basically, the drawn `layer` is translated to GeoJSON, combined with the `name` and `description` properties, then added on the map with `L.geoJSON`. Without this part, our drawing would only be sent to the database without being shown on the map, unless we reload the web page. 
 
-Save your changes and preview in the browser. Draw a shape on your map, enter some attribute information for the name and description, and click submit. Your shape should persist on the map; this is great! Next let's check the JS console to make sure the data was submitted to the database. 
+Save your changes and preview in the browser. Draw a shape on your map, enter some attribute information for the name and description, and click submit. Your shape should persist on the map; this is great! Next let's check the JS console to make sure the data was submitted to the database. Next let's check the JS console to make sure the data was submitted to the database.
 
 Logged to the console, you should see an SQL statement with the geometry of the shape you drew and values for the non-spatial attributes based on what you entered in the form. Additionally, you should see a message that the data was saved. Refresh the page and your newly drawn shape should still show up. If you instead get an error message, check your code for mistakes and try again. 
-
-### 5. A note about permissions
-
-Any database is always associated with one or more database users, who are granted a specific set of privileges. When you set up your ArcGIS Online database for the ArcGIS Field Maps map you made in Lab 4, you granted 'Add,' 'Delete', and 'Update' privileges to members of your MSGT cohort, for instance. We typically talk about database user privileges in terms of various roles. For example, an administrator may have the maximal set of privileges, meaning they can do anything in the database: reading and writing into tables, creating new tables, deleting existing tables, adding or removing other uses, and so on. On the other hand, a read-only user may have a more limited set of privileges so that they can only consume data from the database but cannot make changes to any tables. 
-
-The way you've accessed our database with the SQL API implies a database connection with the default user named `readonlyuser`, which I created when I set up the database. The `readonlyuser` has **read** permissions on all tables in the database, which is why you can execute the SQL query starting with `SELECT` in step 3 to display data from the database in your map. However, as the name `readonlyuser` implies, we would not ordinarily grant such a user **write** permissions that would allow them to modify the table. 
-
-For a simple crowdsourcing app, intended for a trusted audience, we have granted `INSERT` privileges to `readonlyuser` as a simple and effective  way to enable users of the interface you created in Lab 6 to add data to the database. In a way, this makes our database exposed: anyone who enters our web page will be able to insert new records into the table. On the other hand, the worst-case scenario is just that our table will be filled with many unnecessary records. The only privilege we will grant is `INSERT`, which means that `readonlyuser` cannot delete any previously entered records or modify the table in any other way. Moreover, when the URL for our page is shared with a trusted audience, such as among students taking a survey in a class, the chances of someone taking the trouble of finding our page and intentionally sabotaging our database by filling it with a large amount of fake records is very small. If this were a professional deployment, however, we would want to set up a dynamic server with an authentication system to enable only authenticated users to modify the database. 
-
-If at some point in the future you wanted to disable the ability for a `readonlyuser` to insert data into the table, for example when data collection is completed and we do not want to accept any more entries, you can always **revoke** the privilege granted to insert data into the table as follows:
-
-```sql
-REVOKE INSERT ON TABLE table_name
-  FROM readonlyuser; 
-```
-***note***: It seems some of you did not read the instructions above this code block very carefully and you executed this command, revoking privileges from the readonlyuser on your tables. Please note that you should not revoke insert privileges unless and until data collection is complete. Re-read the paragraphs preceding this code block to figure out how to fix your mistake. 
 
 ### 6. Setting up a table for your Lab 6 data collection scenario
 
@@ -419,6 +430,8 @@ Back in the command line interface, create a new table with an appropriate name 
 
 1. a 'geom' field to hold the geometry of each shape the user draws, which should be created when you upload the template file
 2. a field for each input in your form, which you have to create. You must select the data type for each field (text, integer, numeric, boolean, date, [etc.](https://www.postgresql.org/docs/current/datatype.html)), so ensure that it matches the data type collected by the given input. 
+
+Don't forget to update permissions for the public user, following the instructions in step 3 above. 
 
 ### 7. Update your HTML and JS code to connect the form to the table. 
 
@@ -472,7 +485,9 @@ Update each section of the code here to link your table to your form. This shoul
 * Changing the table name (i.e. lab_7_name) and columns (i.e. name, description) referenced in the `INSERT INTO` command to match the name of your newly created table and its columns
 * Changing the variables in the `INSERT INTO` command to match the variables that are holding the input values (i.e. swap enteredUsername and enteredDecription for the variables that hold your form's values). 
 
-Save your changes and test them in the browser. You should be able to draw a new shape, fill in the form, and post the data to the database without any errors being logged to the console. Using the command line interface, check your table by running a `SELECT * FROM tablename` query to see if the data was saved.  
+Save your changes and test them in the browser. You should be able to draw a new shape, fill in the form, and post the data to the database without any errors being logged to the console. Using the command line interface, check your table by running a `SELECT * FROM tablename` query to see if the data was saved.  If you get a console error that resembles the following: chances are good that you forgot to update permissions for the default public user when you created your second table: 
+
+![screenshot of Invalid GeoJSON error](images/Lab7-2.PNG)
 
 #### 7.3 Ensure that drawn shapes persist on the map
 
