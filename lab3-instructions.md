@@ -129,7 +129,6 @@ Let's start by adding a GeoJSON layer to the map. Add the following three module
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-
 ```
 
 Next, we're going to need GeoJSON **data**. In the GitHub repository for this class, you can find a data file called `nps-project.json`. Download this if you haven't already, and move it into your ol-lab folder. This is a polygon feature collection of all of the US National Parks, National Monuments, National Historic Sites, and other properties managed by the National Parks Service. I downloaded it from [this source](https://public-nps.opendata.arcgis.com/datasets/nps-boundary-1/explore?location=12.665142%2C-12.497900%2C1.77), then reprojected it, simplified its attributes and geometry, and converted to GeoJSON. 
@@ -240,6 +239,7 @@ Return to the command prompt. If you closed it between Part 1 and now, you'll ha
 npm run build
 ```
 
-This runs a module that will collect just the modules you imported, plus your web files, and package them in a `dist` (for distribution) folder that you can upload to GitHub. Find that `dist` folder inside the lab3 folder. ***Important not from last year (may no longer be relevant)***: for some reason that I can't quite figure out, the geojson data file will not be copied into the dist folder. Copy and paste the nps-project.json file into the dist folder manually, then upload ONLY the files in the dist folder (plus your geojson data file) to a new GitHub repository, NOT the whole ol-lab folder. 
+
+This runs a module that will collect just the modules you imported, plus your web files, and package them in a `dist` (for distribution) folder that you can upload to GitHub. Find that `dist` folder inside the lab3 folder. ***Important notes from last year (may no longer be relevant)***: for some reason that I can't quite figure out, the geojson data file will not be copied into the dist folder. Copy and paste the nps-project.json file into the dist folder manually, then upload ONLY the files in the dist folder (plus your geojson data file) to a new GitHub repository, NOT the whole ol-lab folder. Additionally, the compiler that you run with the `npm build` command is creating bad path names. This means that your final web page built from the files in the dist folder produces a bunch of 404 errors. The workaround is to remove the / from all the src URLs in your index.html file after the build is complete. There should be three of them, before the folder name assets in all three instances. 
 
 Once you've uploaded, activate Pages and test out the live version to make sure everything works. Submit your URL on Canvas. There is no write-up for this lab, but if you want to provide any feedback on this lab or the instructions, please feel free to do so. It's a new one and would certainly benefit from the thoughtful suggestions this cohort always provides! 
