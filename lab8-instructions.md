@@ -127,7 +127,7 @@ Click 'Create device'. Next, you must select the hardware model you want to emul
 
 Click 'Next'. On the next screen, you need to choose the system image (essentially a software version). It is important that you **select S**, with Android API Level 30. You may need to click the download button next to S and download the system image before you can select it. On this screen, you may see a recommendation to install Haxm:
 
-![screenshot of HAXM recommendation](images/8-10.png)
+![screenshot of HAXM recommendation](images/8-10.PNG)
 
 Haxm is a hardware accelerator that will improve the performance of your AVD. Take a moment to install it (with the recommended settings) if it is not already installed. Once you have Haxm installed and the S system image selected, press 'Next'. 
 
