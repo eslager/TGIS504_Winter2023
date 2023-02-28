@@ -286,7 +286,7 @@ Next let's look at the second chunk of code. This uses a method that is likely n
 
 Fetch is an HTML 5 API used for loading resources asynchronously in the web page. In this sense, it is very similar to the AJAX requests you've made with JQuery to load GeoJSONs into Leaflet maps in the past. You can [learn more about the Fetch API here](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)--and note that it is not supported by the Internet Explorer browser at this time. 
 
-The Fetch request we make in the code above requests the resource located at the specified parameter--in this case, the URL created by the combination of the variables `url` and `sqlQuery`, or `http://178.128.228.240:4000/sql?q=SELECT geom, description, name FROM emma_table`. 
+The Fetch request we make in the code above requests the resource located at the specified parameter--in this case, the URL created by the combination of the variables `url` and `sqlQuery`, or `https://gisdb.xyz/sql?q=SELECT geom, description, name FROM emma_table`. 
 
 The `.then()` method in the next bit of code takes the response from the Fetch request and formats it as JSON, and the next `.then()` adds the popups created by the `addPopup` function we wrote above to the map. 
 
@@ -406,7 +406,7 @@ In the code under the next comment, we actually send the data to the database wi
             });
 ```
 
-Notice again that we are using Fetch, and that we are connecting to the URL you specified with the `url` variable in step 3. Recall that in this case, the URL is `https://178.128.228.240:4000/sql`. We use the POST method (an HTTP method for sending data to a server; documentation available here) to send the data, properly formatted and [encoded](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI). The remaining parts of the code (the `.then()` functions and the `.catch` function) log some additional information to the console to help us notice and resolve any errors. 
+Notice again that we are using Fetch, and that we are connecting to the URL you specified with the `url` variable in step 3. Recall that in this case, the URL is `https://gisdb.xyz/sql`. We use the POST method (an HTTP method for sending data to a server; documentation available here) to send the data, properly formatted and [encoded](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI). The remaining parts of the code (the `.then()` functions and the `.catch` function) log some additional information to the console to help us notice and resolve any errors. 
 
 Finally, let's look at the code under the last comment: 
 
