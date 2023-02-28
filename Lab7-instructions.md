@@ -152,23 +152,20 @@ To utilize this database with the data collection tool you built with Leaflet in
 The basic URL structure for sending a request to the SQL API looks like this: 
 
 ```
-https:178.128.228.240:4000/sql?q=SQL_STATEMENT
+https://gisdb.xyz/sql?q=SQL_STATEMENT
 ```
 
 where:
 
-- `178.128.228.240` is the server's IP address;
-- `:4000` is the port we are connecting on, and 
+- `https://gisdb.xyz/` is the URL address for the server, and 
 - `SQL_STATEMENT` should be replaced with the SQL **query**
 
 For example, here is a specific query:
 
 ```
-https:178.128.228.240:4000/sql?q=
+https://gisdb.xyz/sql?q=
 SELECT * FROM emma_table
 ```
-
-where:
 
 Based on the data that is currently in the table, the data that would be returned from this call would be the following GeoJSON content: 
 
