@@ -259,7 +259,7 @@ The first change we will make to the existing code will be to add previously dra
 
 ```javascript
 var tableData = L.layerGroup().addTo(map);
-var url = "https://178.128.228.240:4000/sql?q=";
+var url = "https://gisdb.xyz/sql?q=";
 // change the Query below by replacing lab_7_name with your table name
 var sqlQuery = "SELECT geom, description, name FROM emma_table";
 function addPopup(feature, layer) {
