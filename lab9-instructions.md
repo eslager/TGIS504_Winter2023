@@ -43,10 +43,10 @@ To use React Native as an app wrapper, we're going to use a package called [Reac
 In the command line interface, while inside your `CollectorApp` folder, run the following command: 
 
 ```bash
-npm install --save react-native-webview
+npm install --save react-native-webview@11.23.1
 ```
 
-This will add some additional files to the `node_modules` folder inside your `CollectorApp` folder that will allow us to access the functionality built into the React Native WebView package. 
+This will add some additional files to the `node_modules` folder inside your `CollectorApp` folder that will allow us to access the functionality built into the React Native WebView package. We are installing version 11.23.1 even though it isn't the latest version, because this is the latest version that is compatible with Expo. 
 
 ### 2. Make changes to App.js to use WebView
 
@@ -200,15 +200,114 @@ Save your changes, then back in the CLI, run the `npx expo start` command to re-
 
 ### 4. Build final version app
 
-Instructions to come
+#### 4.1. Installing EAS Build
+
+Building the final app requires that we compile all the code required by the @import statements and all the code written in the App.js file and package it up as an APK that can be installed on an Android device. To help us with this, we'll use another an Expo tool called [EAS Build](https://docs.expo.dev/build/introduction/), which is both a CLI and a web tool. 
+
+In the command prompt, stop your Expo server with the ctrl+c command, then run the following command: 
+
+```bash
+npm install -g eas-cli
+```
+
+After this installs, you can now use `eas` commands in the CLI. Next, enter the following command: 
+
+```bash
+eas login
+```
+
+This will prompt you to enter your Expo account login information, which you likely set up when you downloaded the Expo app to your phone in Lab 8. If for some reason you don't yet have an account, visit https://expo.dev/ and use the Sign Up button to set up an account. After you've created your account, run the login command again and use your new credentials to sign in. 
+
+Once you're signed in, you need to build a configuration file to tell the program how to configure your app when it builds it. Run the following command: 
+
+```bash
+eas build:configure
+```
+
+You may get a response that tells you:
+
+```bash
+EAS project not configured
+? Would you like to automatically create an EAS project for @ejslager/wrapper-test? » (Y/n)    
+```
+
+If this occurs, enter `y` for yes. 
+
+Next you will be asked what platform you want to build for. Use the down arrow to select Android and hit enter. Hopefully you will then get a message that says `Generated eas.json`
+
+#### 4.2. Editing the configuration file and making final changes to the 
+
+You'll edit the newly created eas.json file in VS Code or the text editor of your choice. You can find this file in the root folder of your project (CollectorApp, or whatever you named your project in Lab 8). In VS Code, open the eas.json file. 
+
+This document specifies three different builds that EAS Build can produce: a development build, a preview build, and a production build. You're going to build a preview build, but with different specifications than are listed here. Thus, change the value of the preview object to the following: 
+
+```javascript
+    "preview": {
+      "developmentClient": true,
+      "android": {
+        "buildType": "apk"
+      }
+    },
+```
+
+The `developmentClient` option allows us to build a debug version of the app, which doesn't need to be signed and can be installed on an emulator. The `android` options allow us to build an .apk file rather than an .aab file, which is what we would most likely build if we wanted to distribute through the Google Play Store. Save your changes.
+
+Next re-open the app.json file (NOT the App.js file). In the second line, you should see an option called "name" with its value currently set to "CollectorApp". Change the value of this to read "[Your Name]'s App". For instance, mine would read `"name": "Emma's app",`. It is fine to have spaces and apostrophes in this value, just make sure to leave the "slug" value unchanged. This will be the name that appears under your app with its icon after you install the .apk on a device. Having your individual name in the app title will help me distinguish your app from your classmates' when I am grading, but ordinarily this would be a matter of branding. Save your changes and return to the command prompt. 
+
+#### 4.3. Running and testing the build
+
+We're now ready to build! Enter the following in the command prompt: 
+
+```bash
+eas build --platform android --profile preview
+```
+
+You will likely get a message that reads as follows: 
+
+```
+You want to build a development client build for platforms: Android
+However, we detected that you don't have expo-dev-client installed for your project.
+? Do you want EAS CLI to install expo-dev-client for you? » (Y/n)  
+```
+
+Enter `y` for yes. You will then be asked: 
+
+```
+? What would you like your Android application id to be?   
+```
+
+There should be a default value that looks something like: com.yourExpoUserName.CollectorApp. Hit enter to accept this default. 
+
+Next you will be asked: 
+
+```
+? Generate a new Android Keystore? » (Y/n)  
+```
+
+Enter `y` for yes. Now you will get a message that the program is waiting for the build to complete. This process can take awhile. For instance, when testing on a fairly powerful computer, builds took me between 6 and 7 minutes. Now is a great time to stretch and get a drink of water. 
+
+If all goes well, you will get a message that reads something like: 
+
+```
+√ Build finished
+
+🤖 Android app:
+https://expo.dev/artifacts/eas/55Gn5viKMpU8VoAk1cYcH.apk
+
+? Install and run the Android build on an emulator? » (Y/n) 
+```
+
+The link (the exact address of which will vary from what you see above) will take you to an address where you can download the .apk file. 
+
+[More instructions to come]
 
 ### 5. Write up and submission
 
 On Canvas submit the following: 
 
 * A write-up containing 
-  * A description of your app, including screenshots, written for a public audience. This should be appropriate for including in your Portfolio as an example of your work that you might show to potential clients or employers. 
+  * A description of your app, including screenshots, written for a public audience. This should be appropriate for including in your portfolio as an example of your work that you might show to potential clients or employers. 
 
-* The APK for the emulator version of your app (app-debug.apk file, renamed so that I can distinguish it from your classmates' submissions)
+* The APK for the emulator version of your app, renamed so that I can distinguish it from your classmates' submissions
 * I will award bonus points on a case-by-case basis for particularly effective implementations. 
 
