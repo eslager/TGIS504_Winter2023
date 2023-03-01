@@ -13,9 +13,10 @@ The instructions in this lab are based off of [React Native](https://reactnative
 *Technology stack for this lab*
 
 * Expo command-line interface (CLI)
+* VS Code (or other text editor)
 * Expo Go app (optional)
-* VS Code
 * Android Virtual Device (mobile device emulator)
+* [EAS Build](https://docs.expo.dev/build/introduction/) (service for building APKs and other app files)
 
 ### *Step 0. Fixing a past mistake*
 
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
 
 By adding the padding to the top of the app view, we can resolve the status bar issue. (Note that the `flex:1` declaration, carried over from one of the code blocks in step 2, is necessary for the overall layout. You can find the documentation on this property [here](https://reactnative.dev/docs/flexbox).)
 
-#### 3.2. Icon and splashpage
+#### 3.2. Icon and splash page
 
 In your computer's file manager (Windows File Explorer or MacOS Finder) examine the files in your main project folder (CollectorApp or whatever you named your project). You should see a folder called `assets`. Open this folder to examine its contents. You should see a number of image files, favicon.png, icon.png, adaptive-icon.png, and splash.png. These are the image files used to create your app's icons and splash page. 
 
@@ -125,6 +126,77 @@ Instead of using these defaults, create your own images for your app icon and sp
 * The easiest way to ensure the correct images get used when your app is built is to ensure that the names of each of the images matches the original file names of the original image files saved in the assets folder. However, if you prefer to use your own file names, make sure that you edit the `app.json` file accordingly to update the file names/paths where necessary. 
 
 When you're done, reload the app in your Expo Go app and/or the Android emulator and notice the change to the splash page (the icon won't appear until you build a version of the app outside of Expo, which you will do in the next step). Make any adjustments to the splash page if you wish. 
+
+#### 3.3 Making the splash page work in the final build 
+
+While we can see the splash page fine in testing thanks to Expo Go, we will run into an issue with the splash screen displaying improperly in the final build unless we make some additional changes to the code. 
+
+First, we want to install a component that will help us with this task, [Expo SplashScreen](https://docs.expo.dev/versions/latest/sdk/splash-screen/). To do so, run the following command in the CLI (after stopping the emulator with the ctrl + c command):
+
+```bash
+npx expo install expo-splash-screen
+```
+
+Next, add the following imports to the list at the top of the App.js file: 
+
+```javascript
+import React, { useCallback, useEffect, useState } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+```
+
+After the import statements and before the `export default` function, add the following line of code: 
+
+```javascript
+SplashScreen.preventAutoHideAsync();
+```
+
+Next, inside the curly brackets of the `export default function App() { ` and before the `return()` statement, add the following large section of code: 
+
+```javascript
+ const [appIsReady, setAppIsReady] = useState(false);
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        // Pre-load fonts, make any API calls you need to do here.
+        // We do not use any of these in our app, but we feasibly could. 
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // Tell the application to render
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      // This tells the splash screen to hide immediately! If we call this after
+      // `setAppIsReady`, then we may see a blank screen while the app is
+      // loading its initial state and rendering its first pixels. So instead,
+      // we hide the splash screen once we know the root view has already
+      // performed layout.
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
+```
+
+Examine this code and its comments. The basic effect of this code is to check to see if the app content has loaded, and once it has, to hide splash screen. In the first section of the code, the `prepare()` function gives us a space to asynchronously pre-load resource-intensive parts of the app, such as fonts and APIs. Because we're using WebView, we don't have any of those in this in this app, but I've left that code section to show you how you could use it. 
+
+Finally, make the following change to the `<Webview>` element so that the `onLayoutRootView` callback functions properly: 
+
+```javascript
+      <WebView source={{ uri: 'yourURIhere'}} 
+      onLayout={onLayoutRootView}/> //add this part, then delete this comment
+```
+
+Save your changes, then back in the CLI, run the `npx expo start` command to re-start the emulator and make sure things are working as expected. Troubleshoot if needed.
 
 ### 4. Build final version app
 
