@@ -224,11 +224,11 @@ Once you're signed in, you need to build a configuration file to tell the progra
 eas build:configure
 ```
 
-You may get a response that tells you:
+You may get a response that looks something like:
 
 ```bash
 EAS project not configured
-? Would you like to automatically create an EAS project for @ejslager/wrapper-test? » (Y/n)    
+? Would you like to automatically create an EAS project for @user/project-name? » (Y/n)   
 ```
 
 If this occurs, enter `y` for yes. 
@@ -261,6 +261,8 @@ We're now ready to build! Enter the following in the command prompt:
 ```bash
 eas build --platform android --profile preview
 ```
+
+If you were building this for distribution on the Google Play Store, you would specify that the build should be a `production` build instead of the `preview` version that you are generating here, and you would go through the process of signing the app with an Android Developer Key to authenticate it, which is not something we will do as part of this lab.
 
 You will likely get a message that reads as follows: 
 
@@ -297,9 +299,23 @@ https://expo.dev/artifacts/eas/55Gn5viKMpU8VoAk1cYcH.apk
 ? Install and run the Android build on an emulator? » (Y/n) 
 ```
 
-The link (the exact address of which will vary from what you see above) will take you to an address where you can download the .apk file. 
+The link (the exact address of which will vary from what you see above) will take you to an address where you can download the .apk file. Additionally, if you respond `y` to the question, the program will download your .apk to the Android emulator on your computer, and you can test the app to ensure it appears as expected. 
 
-[More instructions to come]
+If you want to install the preview .apk on your own physical Android device (as opposed to the emulator), you can do so by downloading the file (you would first want to email it to yourself or upload it to an accessible repository) and opening it to install it. However, you'll likely need to change your phone's settings to allow you to install apps downloaded from sources other than the Play Store. Testing your app on a real Android device is *not* a requirement of this lab, but previous students have asked, so I've included an explanation of the process here.
+
+Download the .apk file to your computer, and rename the file so that it includes your name (this will help me distinguish it from your peers when I'm grading). Save this in a place you can find it again so that you can submit it on Canvas. 
+
+With your emulator, test your app and take screenshots of the app's features, including at minimum 3 screenshots that show 1) the map interface with the form visible, 2) some sample data points, and 3) your customized splash page.
+
+***A note**:* Many things can go wrong with the build process, and they don't always yield error messages that are easy to find. Debugging an app takes a more complicated set-up than debugging JavaScript code with the browser console. Going through that set-up is beyond the baseline expectations for this lab, but you can read more about it [here](https://docs.expo.dev/workflow/debugging/) and [here](https://reactnative.dev/docs/debugging). 
+
+<u>For grading purposes</u>, if the command line interface indicates that your build was successful but your app doesn't load as expected, here is a workaround: 
+
+* Submit your .apk as normal on Canvas. 
+* Take your screenshots for the write-up using the emulator on development server with your pre-compiled code, rather than on the post-build .apk
+* Include a comment about the problem you encountered and submit a screenshot of the command line interface indicating that the build was successful
+
+If you encounter errors that require difficult debugging and you attempt to fix them and/or successfully fix them, please let me know that in your submission as well, as that may be a case for bonus points. 
 
 ### 5. Write up and submission
 
@@ -308,6 +324,6 @@ On Canvas submit the following:
 * A write-up containing 
   * A description of your app, including screenshots, written for a public audience. This should be appropriate for including in your portfolio as an example of your work that you might show to potential clients or employers. 
 
-* The APK for the emulator version of your app, renamed so that I can distinguish it from your classmates' submissions
+* The .apk for the preview version of your app, renamed so that I can distinguish it from your classmates' submissions
 * I will award bonus points on a case-by-case basis for particularly effective implementations. 
 
